@@ -1,0 +1,43 @@
+<html>
+    <header>
+        <title>
+        PenSell
+        </title>
+        
+        
+        
+        
+        
+    </header>
+
+    <body>
+    
+        
+        <h1 id = "yo"></h1>
+        
+        
+        
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+        
+        <script>
+          // Initialize Firebase
+          var config = {
+            apiKey: "AIzaSyC-2UOMd7CS8yT7FSMzqiXrTyd2dBjSfFg",
+            authDomain: "it-in-e-comm.firebaseapp.com",
+            databaseURL: "https://it-in-e-comm.firebaseio.com",
+            projectId: "it-in-e-comm",
+            storageBucket: "it-in-e-comm.appspot.com",
+            messagingSenderId: "347563138555"
+          };
+          firebase.initializeApp(config);
+            
+            
+            var h = document.getElementById('yo');
+            var ref = firebase.database().ref().child('text');
+            
+            ref.on('value', snap => h.innerText = snap.val());
+        </script>    
+    </body>
+
+
+</html>
