@@ -36,7 +36,7 @@
               </ul>
                 <ul class="right hide-on-med-and-down">
                 <li><a class="waves-effect waves-light btn" data-target="modal1">Login</a></li>
-                <li><a class="waves-effect waves-light btn hide">Logout</a></li>
+                <li><a onclick="logout()" id="logout" class="waves-effect waves-light btn hide">Logout</a></li>
               </ul>
                 
               <ul class="side-nav" id="mobile-demo">
@@ -75,8 +75,8 @@
                 
             </div>
             <div class="modal-footer">
-              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Signup</a>
+              <a onclick="signIn()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
+                <a onclick="signUp()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Signup</a>
             </div>
           </div>
         

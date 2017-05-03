@@ -41,9 +41,41 @@
              +' </div></div>';
                 }
             });
+    
+        
+        firebase.auth().onAuthStateChanged(userInfo =>{
+            var logout = document.getElementById("logout");
+            if(userInfo){
+                console.log("logged in");
+                logout.classList.remove("hide");
+            }else{
+                console.log("wrong info not loged in");
+                logout.classList.add("hide");
+            }
+            
+        });
+    
+    
+            
+    
+    
 }());
-
-
+function signIn(){
+    var pass = document.getElementById("password").value;
+    var email = document.getElementById("email").value;
+    var auth = firebase.auth();
+    const promise = auth.signInWithEmailAndPassword(email,pass);
+    promise.catch(e => {console.log(e.message)});
+}
+function signUp(){
+    var pass = document.getElementById("password").value;
+    var email = document.getElementById("email").value;
+    var auth = firebase.auth();
+    auth.createUserWithEmailAndPassword(email,pass);
+}
+function logout(){
+    firebase.auth().signOut();
+}
 $( document ).ready(function(){$(".button-collapse").sideNav();
                               $('.modal').modal();
                               
