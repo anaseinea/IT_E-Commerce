@@ -25,18 +25,19 @@
           <li><a href="#!">books</a></li>
         </ul>
         
-         <nav>
+         <nav class="teal darken-2">
             <div class="nav-wrapper container">
               <a href="#!" class="brand-logo center">PenSell</a>
               <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
               <ul class="left hide-on-med-and-down">
                 <li><a href="About.html">About</a></li>
                   <!-- Dropdown Trigger -->
-                  <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+                  <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
               </ul>
                 <ul class="right hide-on-med-and-down">
-                <li><a class="waves-effect waves-light btn" data-target="modal1">Login</a></li>
+                <li><a id="loginModal" class="waves-effect waves-light btn z-depth-1" data-target="modal1">Login</a></li>
                 <li><a onclick="logout()" id="logout" class="waves-effect waves-light btn hide">Logout</a></li>
+                <li><a onclick="" id="kart" class="waves-effect waves-light btn hide" data-target="modal2">Kart</a></li>
               </ul>
                 
               <ul class="side-nav" id="mobile-demo">
@@ -71,16 +72,23 @@
                       <label for="password">Password</label>
                     </div>
                   </div>
-                 
-                
             </div>
             <div class="modal-footer">
-              <a onclick="signIn()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
-                <a onclick="signUp()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Signup</a>
+              <a style="margin-left:5px;" onclick="signIn()" href="#!" class="modal-action modal-close waves-effect waves-green btn">Login</a>
+                <a onclick="signUp()" href="#!" class="modal-action modal-close waves-effect waves-green btn">Signup</a>
             </div>
           </div>
         
         
+        <div id="modal2" class="modal bottom-sheet">
+            <div class="modal-content">
+              <h4>Shopping kart</h4>
+              <p>A bunch of text</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            </div>
+          </div>
         
         <script src="js/myScript.js"></script>
     </body>
