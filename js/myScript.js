@@ -45,12 +45,13 @@
             });
     
         
-        firebase.auth().onAuthStateChanged(userInfo =>{
+        firebase.auth().onAuthStateChanged(user =>{
             var logout = document.getElementById("logout");
             var login = document.getElementById("loginModal");
-            if(userInfo){
+            if(user){
                 console.log("logged in");
                 Materialize.toast('Wellcome you are logged in !', 3000);
+                updateKart(user);
                 logout.classList.remove("hide");
                 login.classList.add("hide");
             }else{
@@ -94,7 +95,10 @@ function signUp(){
                             prompt("nothing in message");
                        });
    
+    setTimeout(checkUser, 2000);
     
+}
+function checkUser(){
     var unsubscribe = firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
           var u = {} ;
@@ -110,6 +114,9 @@ function signUp(){
 }
 function logout(){
     firebase.auth().signOut();
+    var kartEl = document.getElementById('kart');
+    if(!kartEl.classList.contains('hide'))
+            kartEl.classList.add('hide');
 }
 
 function addToKart(i){
@@ -122,15 +129,17 @@ function addToKart(i){
           us.child("kart").once('value',snap =>{//var us = firebase.database().ref().child("users").child(user.email.replace('.','@'));
                                   if(snap.val() != 'o'){
                                       u['kart'] = snap.val() +','+i;
-                                      Materialize.toast('kart wasnt o it was '+snap.val(), 3000);
+                                      //Materialize.toast('kart wasnt o it was '+snap.val(), 3000);
                                   }
                                   else{
                                     u['kart'] =  i;
-                                   console.log("kart is " + u['kart'])   ;
+                                   //console.log("kart is " + u['kart'])   ;
                                   }
+                                    if(u['kart'][0] ==',')
+                                        u['kart'] = u['kart'].slice(1);
                                   console.log('new kart is '+u['kart']);
                                   us.update(u);
-                                  updateKart(u['kart']);
+                                  updateKart(user);
                                   });
           
           
@@ -142,20 +151,116 @@ function addToKart(i){
     });
     unsubscribe();
 }
+var tot;
+var mon;
+function updateKart(user){
+    var us = firebase.database().ref().child("users").child(user.email.replace('.','@'));
+          us.child("kart").once('value',snap =>{
+                                              
+              
+                                                var kartEl = document.getElementById('kart');
+                                                console.log(snap.val());
+                                                if(snap.val() == 'o' || snap.val() == ''){
+                                                    if(!kartEl.classList.contains('hide'))
+                                                        kartEl.classList.add('hide');
+                                                }else{
+                                                    if(kartEl.classList.contains('hide'))
+                                                        kartEl.classList.remove('hide');
+                                                    var kart = snap.val()+'';
+                                                    var kartModal = document.getElementById('kartModal');
+                                                    kartModal.innerHTML = '<h4  class="center">Shopping kart</h4>';
+                                                    var kartProds;
+                                                    if(kart.includes(','))
+                                                        kartProds = kart.split(',');
+                                                    else
+                                                        kartProds = kart;
+                                                    var ref = firebase.database().ref().child('products');
+                                                    console.log("kart array is "+kartProds);
+                                                    ref.once('value', snap => {
 
-function updateKart(kart){
-    var kartEl = document.getElementById('kart');
-    if(kart == ''){
-        if(!kartEl.classList.contains('hide'))
-            kartEl.addClass('hide');
-    }else{
-        if(kartEl.classList.contains('hide'))
-            kartEl.classList.remove('hide');
-        
-    }
+                                                        var prods = JSON.parse(JSON.stringify(snap.val(),null,3));
+                                                        console.log("prods array is "+prods);
+                                                        var total = 0;
+                                                        for(var i=0;i<kartProds.length;i++){
+                                                            total += prods[parseInt(kartProds[i])].price;
+                                                        kartModal.innerHTML +=
+                                            '<div class="col s12">'
+                                           + '<div class="card horizontal">'
+                                             + '<div class="card-image">'
+                   + '<img style="height:130px;" src="https://firebasestorage.googleapis.com/v0/b/it-in-e-comm.appspot.com/o/'
+                        +prods[parseInt(kartProds[i])].image 
+                                            +'?alt=media&token=e3874610-eac5-4454-903e-082deb5e2bbb"></div>'
+                                             + '<div class="card-stacked">'
+                                               + '<div class="card-content"><p>'
+                                               +   prods[parseInt(kartProds[i])].disc
+                                               + '</p><p class="right-align">'+prods[parseInt(kartProds[i])].price+' AED</p></div>'
+                                                +'<div class="card-action">'
+                                                 + '<a onclick="removeFromKart('+i+')" href="#" class="red-text center-align">Remove item</a>'
+                                               + '</div></div></div></div>'
+                                                        }
+                                                        tot = total;
+                                                        us.child("money").once('value',snap =>{mon = snap.val(); kartModal.innerHTML += 
+                                                        '<p class="center-align">Total amount: '+total+'<br/>Your balance: '+snap.val()+'</p>';
+                                                        });
+                                                    });
+
+                                                }
+                                               });
 }
-
+function removeFromKart(i){
+    var unsubscribe = firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+          var u = {} ;
+        
+        var us = firebase.database().ref().child("users").child(user.email.replace('.','@'));
+          us.child("kart").once('value',snap =>{
+                                    k = snap.val().split(',');
+                                    u['kart'] = '';
+                                    for(var e=0;e<k.length;e++){
+                                        if(e != i)
+                                            u['kart'] +=k[e]+',';
+                                    }
+                                    u['kart'] = u['kart'].slice(0, -1);
+                                  
+                                  us.update(u);
+                                  updateKart(user);
+                                  });
+          
+          
+        // User is signed in.
+      } else {
+         // $('#modal1').modal('open');
+        // No user is signed in.
+      }
+    });
+    unsubscribe();
+}
+function buyAll(){
+    console.log("total is "+tot+"   money is "+mon);
+    var unsubscribe = firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+          var u = {} ;
+        
+        var us = firebase.database().ref().child("users").child(user.email.replace('.','@'));
+          us.child("kart").once('value',snap =>{
+                                    u['kart'] = '';
+                                  us.update(u);
+                                  updateKart(user);
+                                  });
+          
+          us.child("money").once('value',snap =>{
+                                    
+                                    mon = mon - tot;
+                                    tot = 0;
+                                    u['money'] = mon;
+                                  us.update(u);
+                                  });
+        // User is signed in.
+      }
+});
+}
 $( document ).ready(function(){$(".button-collapse").sideNav();
-                              $('.modal').modal();
+                              $('.modal').modal({startingTop: '40%', // Starting top style attribute
+      endingTop: '10%'});
                               
                               })
