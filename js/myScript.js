@@ -1,4 +1,4 @@
-//var kart = '';
+var tag = 'all';
 (function(){
     
     
@@ -13,7 +13,40 @@
           firebase.initializeApp(config);
             
             
-            var products = document.getElementById('products');
+            putTheProds();
+    
+        
+        firebase.auth().onAuthStateChanged(user =>{
+            var logout = document.getElementById("logout");
+            var logoutm = document.getElementById("logoutm");
+            var login = document.getElementById("loginModal");
+            var loginm = document.getElementById("loginModalm");
+            if(user){
+                console.log("logged in");
+                Materialize.toast('Wellcome you are logged in !', 3000);
+                updateKart(user);
+                logout.classList.remove("hide");
+                logoutm.classList.remove("hide");
+                login.classList.add("hide");
+                loginm.classList.add("hide");
+            }else{
+                Materialize.toast('Wellcome login if you want to buy something', 3000);
+                console.log("wrong info not loged in");
+                logout.classList.add("hide");
+                logoutm.classList.add("hide");
+                login.classList.remove("hide");
+                loginm.classList.remove("hide");
+            }
+            
+        });
+    
+    
+            
+    
+    
+}());
+function putTheProds(){
+    var products = document.getElementById('products');
             var ref = firebase.database().ref().child('products');
             
             ref.on('value', snap => {
@@ -23,6 +56,9 @@
                 var prods = JSON.parse(JSON.stringify(snap.val(),null,3));
                 for(var i=0;i<prods.length;i++){
                  //prompt(prods[1].name);
+                    if(tag != 'all')
+                        if(tag != prods[i].tag)
+                            continue;
                 
                 products.innerHTML += '<div class="col s12 m6 l4"><div class="card hoverable">'
                +' <div class="card-image waves-effect waves-block waves-light">'
@@ -32,7 +68,7 @@
                     +'</div>'
                 +'<div class="card-content">'
                     +'<a onclick="addToKart('+i+')" style="bottom: auto;" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">shopping_cart</i></a>'
-                  +'<span class="card-title activator grey-text text-darken-4" style="font-size:1.2rem;">'+prods[i].disc+
+                  +'<span class="card-title activator grey-text text-darken-4" style="font-size:1.2rem;">'+prods[i].disc
                    + '<i class="material-icons right">more_vert</i></span>'
                     
                     +'<p style="color: orange;">'+prods[i].price+' AED</p>'
@@ -43,31 +79,8 @@
              +' </div></div>';
                 }
             });
-    
-        
-        firebase.auth().onAuthStateChanged(user =>{
-            var logout = document.getElementById("logout");
-            var login = document.getElementById("loginModal");
-            if(user){
-                console.log("logged in");
-                Materialize.toast('Wellcome you are logged in !', 3000);
-                updateKart(user);
-                logout.classList.remove("hide");
-                login.classList.add("hide");
-            }else{
-                Materialize.toast('Wellcome login if you want to buy something', 3000);
-                console.log("wrong info not loged in");
-                logout.classList.add("hide");
-                login.classList.remove("hide");
-            }
-            
-        });
-    
-    
-            
-    
-    
-}());
+}
+function setTag(ta){tag = ta;putTheProds();}
 function signIn(){
     var pass = document.getElementById("password").value;
     var email = document.getElementById("email").value;
@@ -115,8 +128,11 @@ function checkUser(){
 function logout(){
     firebase.auth().signOut();
     var kartEl = document.getElementById('kart');
-    if(!kartEl.classList.contains('hide'))
-            kartEl.classList.add('hide');
+    var kartElm = document.getElementById('kartm');
+    if(!kartEl.classList.contains('hide')){
+        kartEl.classList.add('hide');
+        kartElm.classList.add('hide');
+    }
 }
 
 function addToKart(i){
@@ -159,13 +175,19 @@ function updateKart(user){
                                               
               
                                                 var kartEl = document.getElementById('kart');
+                                                var kartElm = document.getElementById('kartm');
                                                 console.log(snap.val());
                                                 if(snap.val() == 'o' || snap.val() == ''){
-                                                    if(!kartEl.classList.contains('hide'))
+                                                    if(!kartEl.classList.contains('hide')){
                                                         kartEl.classList.add('hide');
+                                                        kartElm.classList.add('hide');
+                                                    }
+                                                        
                                                 }else{
-                                                    if(kartEl.classList.contains('hide'))
+                                                    if(kartEl.classList.contains('hide')){
                                                         kartEl.classList.remove('hide');
+                                                        kartElm.classList.remove('hide');
+                                                    }
                                                     var kart = snap.val()+'';
                                                     var kartModal = document.getElementById('kartModal');
                                                     kartModal.innerHTML = '<h4  class="center">Shopping kart</h4>';
