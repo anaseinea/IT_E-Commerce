@@ -1,0 +1,120 @@
+@@ -0,0 +1,118 @@
+<html>
+    <head>
+        <title>
+        PenSell
+        </title>
+        <link href="css/materialize.min.css" rel="stylesheet">
+        <link href="css/myCSS.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/materialize.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+
+        
+        
+        
+        
+    </head>
+
+    <body>
+        
+        
+         <nav class="teal darken-2">
+            <div class="nav-wrapper container">
+              <a href="index.html" class="brand-logo center">PenSell</a>
+              <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+              <ul class="left hide-on-med-and-down">
+                <li><a href="About.html">About</a></li>
+              </ul>
+                <ul class="right hide-on-med-and-down">
+                <li><a id="loginModal" class="waves-effect waves-light btn z-depth-1" data-target="modal1">Login</a></li>
+                <li><a onclick="logout()" id="logout" class="waves-effect waves-light btn hide">Logout</a></li>
+                <li><a onclick="" id="kart" class="waves-effect waves-light btn hide" data-target="modal2">Kart</a></li>
+              </ul>
+                
+              <ul class="side-nav" id="mobile-demo">
+                  <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+                  <li><a id="loginModalm" class="waves-effect waves-light btn z-depth-1" data-target="modal1">Login</a></li>
+                <li><a onclick="logout()" id="logoutm" class="waves-effect waves-light btn hide">Logout</a></li>
+                <li><a onclick="" id="kartm" class="waves-effect waves-light btn hide" data-target="modal2">Kart</a></li>
+                <li><a href="About.html">About</a></li>
+                  
+              </ul>
+            </div>
+          </nav>
+        <h3 class="center">About PenSell.com<br/><br/><br/></h2>
+            <div class="center"><p class="flow-text">Welcome to PenSell.com<br/>
+            Created by: <br/>
+             Anas Einea <br/>
+             Bachr Nadaf <br/>
+             Saadu Sultan </p> </div>
+            
+            
+        </div>
+        
+        <!--<a class="waves-effect waves-light btn" href="#modal1">Modal</a> the modal trigger -->
+
+          <!-- Modal Structure -->
+          <div id="modal1" class="modal">
+            <div class="modal-content">
+                
+                <h4>Fill your information<br/></h4>
+              
+                 <div class="row">
+                    <div class="input-field col s12">
+                      <input id="email" type="email" class="validate">
+                      <label for="email">Email</label>
+                    </div>
+                  </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                      <input id="password" type="password" class="validate">
+                      <label for="password">Password</label>
+                    </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <a style="margin-left:5px;" onclick="signIn()" href="#!" class="modal-action modal-close waves-effect waves-green btn">Login</a>
+                <a onclick="signUp()" href="#!" class="modal-action modal-close waves-effect waves-green btn">Signup</a>
+            </div>
+          </div>
+        
+        
+        <div id="modal2" class="modal modal-fixed-footer">
+            
+            <div id="kartModal" class="modal-content row container">
+              
+                
+                    
+                
+            </div>
+            <div class="modal-footer">
+              <a onclick="buyAll()" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Checkout</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+          </div>
+        
+        <footer class="page-footer teal darken-2">
+          <div class="container">
+            <div class="row">
+              
+              <div class="col l4  s12">
+                <h5 class="white-text">Resources</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="https://firebase.google.com/">Firebase</a></li>
+                    <li><a class="grey-text text-lighten-3" href="http://materializecss.com/">Materialize</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+        </footer>
+        
+        <script src="js/myScript.js"></script>
+    </body>
+    
+
+
+</html>
+\ No newline at end of file
